@@ -33,7 +33,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
     // Validate email & password
     if (!user) {
-        return next(new ErrorResponse('Invalid credewsdsfdentials', 400));
+        return next(new ErrorResponse('Invalid credentials', 400));
     }
     console.log(user);
     const isMatch = await user.matchPassword(user_Password);
