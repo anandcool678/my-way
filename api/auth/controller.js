@@ -26,7 +26,7 @@ exports.register = asyncHandler(async (req, res, next)=>{
 });
 
 exports.login = asyncHandler(async (req, res, next) => {
-    const {user_Email,user_Phone_Number, user_Password} = req.body;
+    const {user_Email, user_Password} = req.body;
 
     const user = await User.findOne({user_Email}).select('+user_Password');
     

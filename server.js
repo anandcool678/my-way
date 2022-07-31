@@ -68,7 +68,8 @@ app.use(express.static(path.join(__dirname, 'public'), options));
 // Use Routes
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/user', user);
-app.get('*.*', express.static('./public/frontend')); // production
+
+// app.get('*.*', express.static('./public/frontend')); // production
 
 app.all('*', (req, res) => {
     res.status(200).sendFile('/', {root: './public/frontend'});
