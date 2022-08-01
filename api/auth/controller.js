@@ -5,20 +5,23 @@ const { generateFromEmail } = require("unique-username-generator");
 const validatePhoneNumber = require('validate-phone-number-node-js');
 
 exports.register = asyncHandler(async (req, res, next)=>{
-    const {user_Name,user_Email,user_Phone_Number, user_Password,user_Username} = req.body;
+    const {user_Name,user_Email,user_Phone_Number, user_Password} = req.body;
+    let user_Username;
     if(req.body.user_Username==null){
         const t = generateFromEmail(
             user_Email,
             3
         );
-        req.body.user_Username = t;
+        console.log(t);
+        user_Username=t;
+        
     }
     
     // req.body.user_Username.replace(generate_Username); 
     const validate_Phone_Number = validatePhoneNumber.validate(req.body.user_Phone_Number);
     if(!validate_Phone_Number){
         return next(new ErrorResponse('Please enter valid phone number',400));
-    } 
+    }
     const user = await User.create({user_Name,user_Email,user_Phone_Number, user_Password,user_Username});
 
     sendTokenResponse(user, 200, res);
@@ -60,11 +63,12 @@ exports.logout = asyncHandler(async (req, res, next) => {
 });
 
 exports.updatePassword = asyncHandler(async (req, res, next) => {
-    const user = await User.findById(req.user.id).select('+password');
+    const user = await User.findById(req.body.id).select('+user_Password');
 
     if (!(await user.matchPassword(req.body.currentPassword))) {
         return next(new ErrorResponse('Password is incorrect', 401));
     }
+    console.log(user);
 
     user.user_Password = req.body.newPassword;
     await user.save();

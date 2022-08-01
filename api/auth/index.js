@@ -6,5 +6,5 @@ router.route('/register').post(register);
 // /api/v1/auth/register
 router.route('/login').post(login);
 router.route('/logout').get(logout);
-router.route('/reset').get(updatePassword);
+router.route('/reset').post(updatePassword);
 module.exports = router;
