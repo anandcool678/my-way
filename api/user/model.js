@@ -4,34 +4,37 @@ const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema({
     user_Name: {
         type: String,
-        required: [true, 'Please provide your first name'],
+        required: [false,'Please provide your first name'],
     },
     user_Email: {
         type: String,
-        required: [true, 'Please provide an email address'],
+        required: [false, 'Please provide an email address'],
         unique: true,
         lowercase: true,
         trim: true,
         match: [/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Please add valid email address.'],
     },
     user_Phone_Number:{
-        type:Number,
+        type: Number,
         unique:true,
         required:[true,"Phone number required"],
     },
     user_Username:{
-        type:String,
-        // unique:true,
-        // default:null,
+        type: String,
+        unique:true,
         required:[false],
     },
     user_Password: {
         type: String,
-        required: [true, 'Password can not be blank'],
-        select: false,
+        required: [false, 'Password can not be blank'],
+        // select: false,
         minlength: 8,
-        maxlength:20,
+        default:"",
+        // maxlength:20,
         match: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+    },
+    user_Phone_OTP:{
+        type: String,
     },
     createdAt: {
         type: Date,
