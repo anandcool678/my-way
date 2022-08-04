@@ -1,5 +1,6 @@
 const fast2sms = require("fast-two-sms");
 const {FAST2SMS} = require("../config/otp");
+const ErrorResponse = require("./errorResponse");
 
 exports.generateOTP = (otp_length) => {
   // Declare a digits variable
@@ -20,7 +21,7 @@ exports.fast2sms = async ({ message, contactNumber }, next) => {
       numbers: [contactNumber],
     });
     console.log(res);
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    return next(new ErrorResponse('invalid',400));
   }
 };

@@ -26,28 +26,34 @@ exports.register = asyncHandler(async (req, res, next)=>{
     if(!validate_Phone_Number){
         return next(new ErrorResponse('Please enter valid phone number',400));
     }
-    const user = await User.create({user_Name,user_Email,user_Phone_Number, user_Password,user_Username});
-
+    
     // sendTokenResponse(user, 200, res);
     // console.log(user);
     // // generate otp
     // const otp = generateOTP(6);
-    // // save otp to user collection
+    // save otp to user collection
     // user.user_Phone_OTP = otp;
     // await user.save();
-    // // send otp to phone number
+    // send otp to phone number
     // await fast2sms(
-    //   {
-    //     message: `Your OTP is ${otp}`,
-    //     contactNumber: user.user_Phone_Number,
-    //   },
-    //   next
-    // );
-  
+    //     {
+    //         message: `Your OTP is ${otp}`,
+    //         contactNumber: user.user_Phone_Number,
+    //     },
+        
+    //     );
+    const user = await User.create({user_Name,user_Email,user_Phone_Number, user_Password,user_Username});
+    console.log(user);
     sendTokenResponse(user,200,res);
 
 
 });
+// exports.checkOTP = async (req, res, next) => {
+//     const {user_Phone_Number,} = body;
+//     const otp = generateOTP(6);
+//     user.user_Phone_OTP = otp;
+
+// }
 
 // exports.loginWithPhoneOtp = async (req, res, next) => {
 //     try {
@@ -119,7 +125,9 @@ exports.register = asyncHandler(async (req, res, next)=>{
 // @routes      /api/v1/auth/login
 // method       POST
 exports.login = asyncHandler(async (req, res, next) => {
-    const {user_Email, user_Password} = req.body;
+    let {user_Email, user_Password} = req.body;
+    user_Email = decodeURIComponent(req.body.user_Email);
+    user_Password = decodeURIComponent(req.body.user_Password);
 
     const user = await User.findOne({user_Email}).select('+user_Password');
     
