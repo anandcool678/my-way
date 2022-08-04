@@ -130,15 +130,15 @@ exports.login = asyncHandler(async (req, res, next) => {
     user_Email = decodeURIComponent(req.body.user_Email);
     user_Password = decodeURIComponent(req.body.user_Password);
     // console.log(user_Email,"sksl");
-    // console.log(user_Password);
+    console.log(user_Password);
     const user = await User.findOne({user_Email}).select('+user_Password');
     
-
+    console.log(user);
     // Validate email & password
     if (!user) {
-        return next(new ErrorResponse('Invalid credentials', 400));
+        return next(new ErrorResponse('Invalid credentials', 402));
     }
-    console.log(user);
+    
     const isMatch = await user.matchPassword(user_Password);
     
 
