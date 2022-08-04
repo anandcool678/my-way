@@ -62,18 +62,18 @@ const options = {
         res.set('x-timestamp', Date.now());
     },
 };
-app.use(express.static(path.join(__dirname, 'public'), options));
+// app.use(express.static(path.join(__dirname, 'public'), options));
 
 
 // Use Routes
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/user', user);
 
-app.get('*.*', express.static('./public/frontend')); // production
+// app.get('*.*', express.static('./public/frontend')); // production
 
-app.all('*', (req, res) => {
-    res.status(200).sendFile('/', {root: './public/frontend'});
-});
+// app.all('*', (req, res) => {
+//     res.status(200).sendFile('/', {root: './public/frontend'});
+// });
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
