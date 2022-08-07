@@ -44,7 +44,13 @@ exports.register = asyncHandler(async (req, res, next)=>{
     //     );
     const user = await User.create({user_Name,user_Email,user_Phone_Number, user_Password,user_Username});
     console.log(user);
-    sendTokenResponse(user,200,res);
+    // res.send(user);
+    res.status(200).json({
+        success: true,
+        error:null,
+        user,
+    });
+    // sendTokenResponse(user,200,res);
 
 
 });
@@ -136,6 +142,11 @@ exports.login = asyncHandler(async (req, res, next) => {
     console.log(user);
     // Validate email & password
     if (!user) {
+        res.status(402).json({
+            success: false,
+            error:`Invalid User`,
+            user:null,
+        });
         return next(new ErrorResponse('Invalid credentials', 402));
     }
     
@@ -143,11 +154,23 @@ exports.login = asyncHandler(async (req, res, next) => {
     
 
     if (!isMatch) {
-        console.log(user_Password);
+        // console.log(user_Password);
+        res.status(401).json({
+            success: false,
+            error:`Invalid password`,
+            user:null,
+        });
+        // sendTokenResponse(user, 401, res);
         return next(new ErrorResponse('Invalid password', 401));
     }
     // Check for user
-    sendTokenResponse(user, 200, res);
+    res.status(200).json({
+        success: true,
+        error: null,
+        user,
+    });
+    // res=user;
+    // sendTokenResponse(user, 200, res);
 });
 // Login Existing User 
 // @routes      /api/v1/auth/logout
@@ -178,8 +201,12 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
     user.user_Password = req.body.newPassword;
     await user.save();
-
-    sendTokenResponse(user, 200, res);
+    res.status(200).json({
+        success: true,
+        error: null,
+        user,
+    });
+    // sendTokenResponse(user, 200, res);
 });
 
 // Update user details
@@ -206,6 +233,11 @@ exports.updateUser = asyncHandler(async(req, res, next) => {
        
     await user.save();
     console.log(user); 
+    res.status(200).json({
+        success: true,
+        error: null,
+        user
+    });
     sendTokenResponse(user,200,res);
 
 });

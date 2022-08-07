@@ -28,10 +28,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [false, 'Password can not be blank'],
         // select: false,
-        minlength: 8,
-        default:"",
-        // maxlength:20,
-        match: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+        // minlength: 8,
+       
+        match: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/,
     },
     user_Phone_OTP:{
         type: String,
