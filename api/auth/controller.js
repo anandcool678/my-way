@@ -206,7 +206,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
         error: null,
         user,
     });
-    // sendTokenResponse(user, 200, res);
+    sendTokenResponse(user, 200, res);
 });
 
 // Update user details
@@ -215,8 +215,14 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 exports.updateUser = asyncHandler(async(req, res, next) => {
     const {id,user_Phone_Number,user_Email,user_Name,user_Username} = req.body;
     const user = await User.findById(id);
-    console.log(req.body.user_Phone_Number);
+    // console.log(user);
+    // console.log(req.body.user_Phone_Number);
     if(!user){
+        res.status(400).json({
+            success: false,
+            error:`User not found`,
+            user:null,
+        });
         return next(new ErrorResponse("User not registered",400));
 
     }
@@ -228,9 +234,9 @@ exports.updateUser = asyncHandler(async(req, res, next) => {
         );
     }
     user.user_Email = req.body.user_Email;
-    // user.user_Password = await fetch()
+    // // user.user_Password = await fetch()
     user.user_Name = req.body.user_Name;
-       
+
     await user.save();
     console.log(user); 
     res.status(200).json({
@@ -239,6 +245,7 @@ exports.updateUser = asyncHandler(async(req, res, next) => {
         user
     });
     sendTokenResponse(user,200,res);
+    
 
 });
 

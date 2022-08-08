@@ -23,6 +23,7 @@ require('colors');
 // route files
 const auth = require('./api/auth');
 const user = require('./api/user');
+const vehicle = require('./api/vehicle');
 const app = express();
 
 
@@ -68,6 +69,7 @@ const options = {
 // Use Routes
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/user', user);
+app.use('/api/v1/vehicle', vehicle);
 
 // app.get('*.*', express.static('./public/frontend')); // production
 

@@ -26,10 +26,10 @@ const userSchema = new mongoose.Schema({
     },
     user_Password: {
         type: String,
-        required: [false, 'Password can not be blank'],
-        // select: false,
+        required: [true, 'Password can not be blank'],
+        select: false,
         // minlength: 8,
-       
+        default:null,
         match: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/,
     },
     user_Phone_OTP:{
