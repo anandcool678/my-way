@@ -12,7 +12,12 @@ exports.register = asyncHandler(async (req, res, next)=>{
     let {user_Name,user_Email,user_Phone_Number, user_Password,user_Username,} = req.body;
     const phoneExist = await User.findOne({user_Phone_Number});
     if(phoneExist){
-        return next(new ErrorResponse('User already exist',400));
+        return res.status(400).json({
+            success: true,
+            error:"User already exists",
+            user:null,
+        });
+        // return next(new ErrorResponse('User already exist',400));
 
     }
 
@@ -45,7 +50,7 @@ exports.register = asyncHandler(async (req, res, next)=>{
     const user = await User.create({user_Name,user_Email,user_Phone_Number, user_Password,user_Username});
     console.log(user);
     // res.send(user);
-    res.status(200).json({
+    return res.status(200).json({
         success: true,
         error:null,
         user,
@@ -142,12 +147,12 @@ exports.login = asyncHandler(async (req, res, next) => {
     console.log(user);
     // Validate email & password
     if (!user) {
-        res.status(402).json({
+        return res.status(402).json({
             success: false,
             error:`Invalid User`,
             user:null,
         });
-        return next(new ErrorResponse('Invalid credentials', 402));
+        // return next(new ErrorResponse('Invalid credentials', 402));
     }
     
     const isMatch = await user.matchPassword(user_Password);
@@ -155,13 +160,13 @@ exports.login = asyncHandler(async (req, res, next) => {
 
     if (!isMatch) {
         // console.log(user_Password);
-        res.status(401).json({
+        return res.status(401).json({
             success: false,
             error:`Invalid password`,
             user:null,
         });
         // sendTokenResponse(user, 401, res);
-        return next(new ErrorResponse('Invalid password', 401));
+        // return next(new ErrorResponse('Invalid password', 401));
     }
     // Check for user
     res.status(200).json({
@@ -249,6 +254,70 @@ exports.updateUser = asyncHandler(async(req, res, next) => {
 
 });
 
+
+// Add payment
+// @routes      /api/v1/auth/addPayment/:id
+// method       PUT
+exports.addPoints = asyncHandler(async(req,res,next) =>{
+    const{id,user_Email,payment} = req.body;
+
+    const user = await User.findById(id);
+
+    if(!user){
+        return res.status(400).json({
+            success: false,
+            error:`User not found`,
+            user:null,
+        }); 
+    }
+    var point_to_add = payment * 0.8 *5;
+    user.user_Points = user.user_Points + point_to_add;
+    await user.save();
+    console.log(user); 
+    return res.status(200).json({
+        success: true,
+        error: null,
+        user
+    });
+    // sendTokenResponse(user,200,res);
+
+
+});
+
+exports.deductPoints = asyncHandler(async(req,res,next) =>{
+    const{id,points} = req.body;
+
+    const user = await User.findById(id);
+
+    if(!user){
+        return res.status(400).json({
+            success: false,
+            error:`User not found`,
+            user:null,
+        }); 
+    }
+    // user.user_Points = ;
+    if(user.user_Points - points<0){
+        // user.user_Points = user.user_Points + points;
+        return res.status(402).json({
+            success: false,
+            error:`Insufficient Fund`,
+            user,
+        }); 
+    }
+    user.user_Points = user.user_Points - points;
+
+    await user.save();
+    console.log(user); 
+    return res.status(200).json({
+        success: true,
+        error: null,
+        user
+    });
+    // sendTokenResponse(user,200,res);
+
+
+});
 
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {

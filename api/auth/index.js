@@ -1,5 +1,5 @@
 const express = require('express');
-const {login, register, logout, updatePassword, updateUser,verifyPhoneOtp} = require('./controller');
+const {login, register, logout, updatePassword, updateUser,verifyPhoneOtp,addPoints,deductPoints} = require('./controller');
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
@@ -11,4 +11,6 @@ router.route('/logout').get(logout);
 router.route('/update/:id').put(updateUser);
 // router.route('/verify').post(verifyPhoneOtp);
 router.route('/reset').post(updatePassword);
+router.route('/addPayment/:id').post(addPoints);
+router.route('/deductPoints/:id').post(deductPoints);
 module.exports = router;

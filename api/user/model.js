@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
     user_Phone_OTP:{
         type: String,
     },
+    user_Points:{
+        type: Number,
+        required: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now
