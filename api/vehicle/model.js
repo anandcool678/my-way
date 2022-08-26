@@ -12,8 +12,8 @@ const vehicleSchema = new mongoose.Schema({
         unique: true,
     },
     user_Email:{
-        type: String,
-        ref: 'User',
+        type:String,
+        ref:'User',
     }
 });
 

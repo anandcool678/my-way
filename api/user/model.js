@@ -32,16 +32,18 @@ const userSchema = new mongoose.Schema({
         default:null,
         match: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/,
     },
-    user_Phone_OTP:{
-        type: String,
-    },
     user_Points:{
         type: Number,
         required: false,
+        default:0,
     },
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    isVerified:{
+        type: Boolean,
+        default: false,
     },
     lastActive: {
         type: Date
